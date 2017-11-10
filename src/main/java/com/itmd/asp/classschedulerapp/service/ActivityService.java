@@ -27,9 +27,22 @@ public class ActivityService {
         return activities;
     }
 
+    public Activity getActivity(Long activityId){
+        return activityRepository.findOne(activityId);
+    }
+
     public Activity addActivity(Activity activity) {
         return activityRepository.save(activity);
     }
 
+    public Activity editActivity (Long activityId, Activity activityDetails){
+        return activityRepository.save(activityDetails);
+    }
+
+    public void deleteActivity(Long activityId) {
+        //Activity activity = activityRepository.findOne(activityId);
+        activityRepository.delete(activityId);
+        //System.out.println("deleted");
+    }
 
 }

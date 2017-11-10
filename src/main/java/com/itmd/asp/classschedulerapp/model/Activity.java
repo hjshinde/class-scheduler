@@ -2,21 +2,18 @@ package com.itmd.asp.classschedulerapp.model;
  import java.io.Serializable;
  import java.util.Date;
 
- import javax.persistence.Column;
- import javax.persistence.Entity;
- import javax.persistence.GeneratedValue;
- import javax.persistence.GenerationType;
- import javax.persistence.Id;
- import javax.persistence.Table;
- import javax.persistence.Temporal;
- import javax.persistence.TemporalType;
+ import javax.persistence.*;
+
  import org.springframework.data.annotation.CreatedDate;
  import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+ import org.springframework.data.annotation.LastModifiedDate;
+ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Entity
 @Table(name="activities")
-@JsonIgnoreProperties(value = {"activityDateCreated"},
-        allowGetters = true)
+@JsonIgnoreProperties(value = {"activityDateCreated","activityDateUpdated"},allowGetters = true)
+@EntityListeners(AuditingEntityListener.class)
 
 public class Activity implements Serializable{
 
@@ -40,6 +37,9 @@ public class Activity implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date activityDateCreated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    private Date activityDateUpdated;
 
 
     public Activity() {
@@ -47,7 +47,7 @@ public class Activity implements Serializable{
     }
 
     public Activity(String activityCourseId, String activityCourse, String activityName, String activityStartDate,
-                    String activityEndDate, boolean activityFinished, Date activityDateCreated) {
+                    String activityEndDate, boolean activityFinished, Date activityDateCreated, Date activityDateUpdated) {
         super();
         this.activityCourseId = activityCourseId;
         this.activityCourse = activityCourse;
@@ -56,10 +56,21 @@ public class Activity implements Serializable{
         this.activityEndDate = activityEndDate;
         this.activityFinished = activityFinished;
         this.activityDateCreated = activityDateCreated;
+        this.activityDateUpdated = activityDateUpdated;
+    }
+
+
+    public Date getActivityDateUpdated() {
+        return activityDateUpdated;
+    }
+
+    public void setActivityDateUpdated(Date activityDateUpdated) {
+        this.activityDateUpdated = activityDateUpdated;
     }
 
     public long getActivityId() {
         return activityId;
+
     }
     public void setActivityId(int activityId) {
         this.activityId = activityId;
@@ -109,10 +120,16 @@ public class Activity implements Serializable{
 
     @Override
     public String toString() {
-        return "Activity [activityId=" + activityId + ", activityCourseId=" + activityCourseId + ", activityCourse="
-                + activityCourse + ", activityName=" + activityName + ", activityStartDate=" + activityStartDate
-                + ", activityEndDate=" + activityEndDate + ", activityFinished=" + activityFinished
-                + ", activityDateCreated=" + activityDateCreated + "]";
+        return "Activity{" +
+                "activityId=" + activityId +
+                ", activityCourseId='" + activityCourseId + '\'' +
+                ", activityCourse='" + activityCourse + '\'' +
+                ", activityName='" + activityName + '\'' +
+                ", activityStartDate='" + activityStartDate + '\'' +
+                ", activityEndDate='" + activityEndDate + '\'' +
+                ", activityFinished=" + activityFinished +
+                ", activityDateCreated=" + activityDateCreated +
+                ", activityDateUpdated=" + activityDateUpdated +
+                '}';
     }
-
 }
